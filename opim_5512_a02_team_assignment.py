@@ -8,6 +8,7 @@ Original file is located at
 """
 
 from sklearn.datasets import fetch_california_housing
+from sklearn.neural_network import MLPRegressor
 import pandas as pd
 
 # Load California Housing dataset
@@ -31,3 +32,16 @@ X_train, X_test, y_train, y_test = train_test_split(
     test_size=0.2,
     random_state=42
 )
+
+# Create MLPRegressor model with specified parameters
+mlpRegress = MLPRegressor(
+    hidden_layer_sizes=(100,50),
+    random_state=42,
+    max_iter=1000,
+    early_stopping=True,
+    validation_fraction=0.1,
+    tol=0.0001
+    )
+
+# Fit the MLPRegressor model on X_train and y_train
+mlpRegress.fit(X_train, y_train)
