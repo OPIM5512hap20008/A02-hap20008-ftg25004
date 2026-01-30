@@ -10,6 +10,8 @@ Original file is located at
 from sklearn.datasets import fetch_california_housing
 from sklearn.neural_network import MLPRegressor
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 # Load California Housing dataset
 housing = fetch_california_housing(as_frame=True)
@@ -45,3 +47,23 @@ mlpRegress = MLPRegressor(
 
 # Fit the MLPRegressor model on X_train and y_train
 mlpRegress.fit(X_train, y_train)
+
+# Make predictions on the training data
+y_train_pred = mlpRegress.predict(X_train)
+
+# Add predictions as a new column in the training DataFrame
+train_results = X_train.copy()
+train_results['Actual'] = y_train
+train_results['Predicted'] = y_train_pred
+
+# Quick check of the first few rows
+print(train_results.head())
+
+# Plot actual vs predicted values
+plt.figure(figsize=(8,6))
+plt.scatter(y_train, y_train_pred, alpha=0.5, color='blue')
+plt.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], 'r--', linewidth=2)
+plt.xlabel('Actual Median House Value')
+plt.ylabel('Predicted Median House Value')
+plt.title('MLPRegressor: Actual vs Predicted on Training Data')
+plt.show()
