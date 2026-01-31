@@ -9,6 +9,7 @@ Original file is located at
 
 from sklearn.datasets import fetch_california_housing
 from sklearn.neural_network import MLPRegressor
+from sklearn.model_selection import train_test_split
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -28,7 +29,6 @@ X = df.drop('MedHouseVal', axis=1)
 y = df['MedHouseVal']
 
 # Split into train and test
-from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y,
     test_size=0.2,
@@ -48,8 +48,9 @@ mlpRegress = MLPRegressor(
 # Fit the MLPRegressor model on X_train and y_train
 mlpRegress.fit(X_train, y_train)
 
-# Make predictions on the training data
+# Make predictions on the training and test data
 y_train_pred = mlpRegress.predict(X_train)
+y_test_pred = mlpRegress.predict(X_test)
 
 # Add predictions as a new column in the training DataFrame
 train_results = X_train.copy()
@@ -59,11 +60,20 @@ train_results['Predicted'] = y_train_pred
 # Quick check of the first few rows
 print(train_results.head())
 
-# Plot actual vs predicted values
+# Plot actual vs predicted values for the train data
 plt.figure(figsize=(8,6))
 plt.scatter(y_train, y_train_pred, alpha=0.5, color='blue')
 plt.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], 'r--', linewidth=2)
 plt.xlabel('Actual Median House Value')
 plt.ylabel('Predicted Median House Value')
 plt.title('MLPRegressor: Actual vs Predicted on Training Data')
+plt.show()
+
+# Plot actual vs predicted values for the test data
+plt.figure(figsize=(8,6))
+plt.scatter(y_test, y_test_pred, alpha=0.5, color='blue')
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', linewidth=2)
+plt.xlabel('Actual Median House Value')
+plt.ylabel('Predicted Median House Value')
+plt.title('MLPRegressor: Actual vs Predicted on Test Data')
 plt.show()
